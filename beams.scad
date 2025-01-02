@@ -5,7 +5,7 @@ $fn=100;
 //-------------------------------------------------------------
 
 // How many holes in the beam.
-HOLES = 14;
+HOLES = 8;
 
 // Dimensions of the beam body. Adjust these if
 // the overall beam size doesn't match a real beam
