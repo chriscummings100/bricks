@@ -1,5 +1,7 @@
 $fn=100;
 
+include <../common/hole.scad>;
+
 //-------------------------------------------------------------
 // Constants for default setup 
 //-------------------------------------------------------------
@@ -19,6 +21,11 @@ BEAM_DEPTH = 7.7;
 // is 4.8.
 INNER_HOLE_DIAMETER = 5;
 
+// Printer resolution in Z is not the same as XY. Adjust this 
+// to adjust the size of horizontally printed holes to account
+// for error and ensure axles move freely in both orientations.
+HORIZONTAL_INNER_HOLE_TOLERANCE = 0.1;
+
 // Diameter and depth of the outer chamfer for a hole. If
 // connectors fit fine but don't push all the way in, one of 
 // these is likely too small - normally the outer diameter. 
@@ -29,11 +36,12 @@ HOLE_CHAMFER = 0.8;
 // deliberately attempting to create none-standard bricks. 
 SPACING = 8;
 
+
 //-------------------------------------------------------------
 // Create the default beam
 //-------------------------------------------------------------
 
-for(i=[0:5]) {
+for(i=[0:0]) {
     translate([0,i*10,0])
     beam(
         num_holes=HOLES+i*2,
@@ -42,7 +50,8 @@ for(i=[0:5]) {
         spacing=SPACING,
         inner_hole_diameter=INNER_HOLE_DIAMETER,
         outer_hole_diameter=OUTER_HOLE_DIAMETER,
-        hole_chamfer=HOLE_CHAMFER
+        hole_chamfer=HOLE_CHAMFER,
+        horizontal_inner_hole_tolerance=HORIZONTAL_INNER_HOLE_TOLERANCE
     );
 }
 
@@ -72,13 +81,7 @@ module hole_shape(beam_diameter, spacing, inner_diameter, outer_diameter, depth,
     union(){
         
         // Main inner hole.
-        cylinder(h=depth, d=inner_diameter, center=true);
-        
-        // Outer chamfer at top and bottom.
-        translate([0,0,depth*0.5])
-            cylinder(h=chamfer*2, d=outer_diameter, center=true);
-        translate([0,0,-depth*0.5])
-            cylinder(h=chamfer*2, d=outer_diameter, center=true);
+        common_hole(inner_diameter, outer_diameter, depth, chamfer);
         
         if(cavity) {
             // The cuts that make up the additional cavity
@@ -116,7 +119,7 @@ module beam_body(spacing, diameter, holes, depth) {
 }
 
 // Construct a single beam.
-module beam(num_holes, beam_diameter, beam_depth, spacing, inner_hole_diameter, outer_hole_diameter, hole_chamfer, face="up") {
+module beam(num_holes, beam_diameter, beam_depth, spacing, inner_hole_diameter, outer_hole_diameter, hole_chamfer, horizontal_inner_hole_tolerance, face="up") {
    
     face_up = face=="up";
     r = face_up ? 90 : 0;
@@ -153,7 +156,7 @@ module beam(num_holes, beam_diameter, beam_depth, spacing, inner_hole_diameter, 
                         hole_shape(
                             beam_diameter = beam_diameter,
                             spacing = spacing,
-                            inner_diameter = inner_hole_diameter,
+                            inner_diameter = inner_hole_diameter+horizontal_inner_hole_tolerance,
                             outer_diameter = outer_hole_diameter,
                             depth = beam_depth,
                             chamfer = hole_chamfer,

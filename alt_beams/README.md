@@ -2,16 +2,9 @@
 
 Scripts are tuned to generate high quality, usable bricks for the Elegoo Mars 5 Ultra. However each contains configuration options at the top of the file that can be tweaked to experiment with the right config for you! 
 
-Currently, scripts are developed for OpenSCAD: https://openscad.org/
+Currently, scripts are developed for OpenSCAD: https://openscad.org/.
 
-On the Mars 5 Ultra, I use the following settings:
-- ABS Like V3 resin
-- Layer exposure: 3.4s
-- Layer size: 0.05
-- Bottom exposure: 90s
-- Supports as in `chitusupports_elegoo_mars_5_ultra.crgx`
-
-With testing, I have found the ABS like resin to be most suitable, with the water soluable resin very unpredictable. 
+For general information on printing these bricks and tips on how to get the best results, see the repo at https://github.com/chriscummings100/bricks.
 
 ## Technic Alternating Beams
 
@@ -23,6 +16,7 @@ With testing, I have found the ABS like resin to be most suitable, with the wate
  - `OUTER_HOLE_DIAMETER`: Diameter of the small chamfer around the hole that allows the connector to clip in. (mm)
  - `HOLE_CHAMFER`: Depth of the chamfer (mm)
  - `SPACING`: Spacing between holes (mm)
+ - `HORIZONTAL_INNER_HOLE_TOLERANCE`: Adjust inner hole diameter for horizontally printed holes (mm)
 
  The 2 beam properties should be adjusted if the overall size of the printed beam doesn't match the lego version.
 
@@ -32,4 +26,4 @@ With testing, I have found the ABS like resin to be most suitable, with the wate
 
  Spacing shouldn't be adjusted unless aiming to create none-standard bricks.
 
-In theory, if your printer behaves differently enough in Z vs XY, the script could be modified to use different diameters for different hole orientations. Thus far I have not found this necessary in practice however.
+Printing horizontal holes can be tricky with 3D printers. If you find connectors/axles don't fit in the horizontal holes, I recommend either increasing the tolerance or using a 4.8mm drill bit to 'clean out' the hole. 
